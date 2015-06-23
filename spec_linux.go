@@ -86,6 +86,7 @@ type LinuxSpec struct {
 	Rlimits          []Rlimit               `json:"rlimits"`
 	SystemProperties map[string]string      `json:"systemProperties"`
 	Resources        *Resources             `json:"resources"`
+	Networks         []*configs.Network     `json:"networks"`
 }
 
 var namespaceMapping = map[string]configs.NamespaceType{
@@ -129,6 +130,7 @@ func createLibcontainerConfig(spec *LinuxSpec) (*configs.Config, error) {
 		Readonlyfs:   spec.Root.Readonly,
 		Hostname:     spec.Hostname,
 		Privatefs:    true,
+		Networks:     spec.Networks,
 	}
 	for _, ns := range spec.Namespaces {
 		t, exists := namespaceMapping[ns.Type]
